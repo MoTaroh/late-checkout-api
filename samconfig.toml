@@ -1,0 +1,10 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "late-checkout-api"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-4c188azyqn56"
+s3_prefix = "late-checkout-api"
+region = "ap-northeast-1"
+capabilities = "CAPABILITY_IAM"
+image_repositories = []
