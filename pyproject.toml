@@ -6,6 +6,9 @@ authors = ["MoTaroh <52590586+MoTaroh@users.noreply.github.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
+beautifulsoup4 = "^4.10.0"
+requests = "^2.27.0"
+pytest = "^6.2.5"
 
 [tool.poetry.dev-dependencies]
 
