@@ -30,7 +30,8 @@ def lambda_handler(event, context):
         Return doc: https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html
     """
 
-    # eventのバリデーション -> とりあえず後回し
+    # TODO:eventのバリデーション -> とりあえず後回し
+
     # eventから検索条件を取得
     body = event["body"]
     stay_year = body["stayYear"]
@@ -38,27 +39,34 @@ def lambda_handler(event, context):
     stay_day = body["stayDay"]
     stay_count = body["stayCount"]
     adult_num = body["adultNum"]
+
     # レイトチェックアウトホテル一覧を取得
     hotels = HOTELS
-    # 取得した一覧でループを回す
+
+    result = []
     for h in hotels:
         # ホテルインスタンスを作成
-        hotel = Hotel(h["hotelName"], h["hotelNo"], stay_year,
-                      stay_month, stay_day, stay_count, adult_num)
+        hotel = Hotel(
+            h["hotelName"], h["hotelNo"], h["regionName"],
+            stay_year, stay_month, stay_day, stay_count, adult_num)
         # URLからhtmlを取得
         html = hotel.get_html()
         parser = Parser()
-
-        # 検索条件（チェックアウト時間）は指定がなければデフォルト値を使用
         plans = parser.parse(html)
-    # URLを抽出し、アクセスする
-    # スクレイピングを行う
-    # スクレイピング結果をリスト化してreturnする
+        hotel_result = {
+            "hotelNo": hotel.yadNo,
+            "hotelName": hotel.hotelName,
+            "prefNo": hotel.prefNo,
+            "regionNo": hotel.regionNo,
+            "regionName": hotel.regionName,
+            "planList": plans
+        }
+        result.append(hotel_result)
 
     return {
         "statusCode": 200,
         "body": json.dumps({
-            "total_count": 10,
-            "items": ["hotel information"],
+            "total_count": len(result),
+            "items": result,
         }),
     }

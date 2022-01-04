@@ -2,7 +2,7 @@ import requests
 
 
 class Hotel():
-    def __init__(self, hotelName: str, yadNo: int, stayYear: int, stayMonth: int, stayDay: int, stayCount: int, adultNum: int) -> None:
+    def __init__(self, hotelName: str, yadNo: int, regionName: str, stayYear: int, stayMonth: int, stayDay: int, stayCount: int, adultNum: int) -> None:
         self.hotelName = hotelName
         self.yadNo = yadNo
         self.stayYear = stayYear
@@ -10,6 +10,7 @@ class Hotel():
         self.stayDay = stayDay
         self.stayCount = stayCount
         self.adultNum = adultNum
+        self.regionName = regionName
         self.url = self.create_url()
 
     def create_url(self) -> str:
