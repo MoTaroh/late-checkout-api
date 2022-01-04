@@ -42,14 +42,6 @@ class Parser:
 
                 plans.append(plan)
 
-        # チェックアウト時間が指定した時間より遅ければ、htmlから下記を取得する
-        # - プラン名
-        # - チェックイン時間
-        # - チェックアウト時間
-        # - 部屋名
-        # - 料金
-        print(plans)
-
         return plans
 
     def is_late(self, checkout_time: str, wish_time: str = "18:00") -> bool:
@@ -65,7 +57,6 @@ class Parser:
 
         wish_time = datetime.strptime(wish_time, "%H:%M")
         checkout_time = datetime.strptime(checkout_time, "%H:%M")
-        print(checkout_time, wish_time)
         if checkout_time >= wish_time:
             return True
         else:
