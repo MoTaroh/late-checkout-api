@@ -33,7 +33,7 @@ def lambda_handler(event, context):
     # TODO:eventのバリデーション -> とりあえず後回し
 
     # eventから検索条件を取得
-    body = event["body"]
+    body = json.loads(event["body"])
     stay_year = body["stayYear"]
     stay_month = body["stayMonth"]
     stay_day = body["stayDay"]
