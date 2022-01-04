@@ -49,7 +49,7 @@ class TestParser:
                                                 <dl class="p-checkInOut u-ml-5">
                                                     <dt class="p-checkInOut__head">チェックアウト</dt>
                                                     <dd class="p-checkInOut__value">
-                                                        ～13:00
+                                                        ～18:00
                                                     </dd>
                                                 </dl>
                                             </div>
@@ -166,7 +166,7 @@ class TestParser:
             {
                 "planName": "【じゃらん限定35％OFF！】カップル＆女子旅におすすめ！クチコミ4.6以上の朝食バイキング付＜13時アウト＞",
                 "checkInTime": "15:00",
-                "checkOutTime": "13:00",
+                "checkOutTime": "18:00",
                 "roomList": [
                     {
                         "roomName": "禁煙クイーン［17平米/ベッド幅160cm］",
@@ -184,5 +184,5 @@ class TestParser:
         assert len(result) == 1
         assert result[0]["planName"] == "【じゃらん限定35％OFF！】カップル＆女子旅におすすめ！クチコミ4.6以上の朝食バイキング付＜13時アウト＞"
         assert result[0]["checkInTime"] == "15:00"
-        assert result[0]["checkOutTime"] == "13:00"
+        assert result[0]["checkOutTime"] == "18:00"
         assert len(result[0]["roomList"]) == len(expected[0]["roomList"])
