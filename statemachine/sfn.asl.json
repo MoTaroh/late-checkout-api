@@ -1,0 +1,33 @@
+{
+    "Comment": "Nice comment",
+    "StartAt": "FindDynamoDB",
+    "States": {
+        "FindDynamoDB": {
+            "Type": "Task",
+            "Resource": "${SearchLambdaFunction}",
+            "Next": "ReturnHotelData"
+        },
+        "ReturnHotelData": {
+            "Type": "Task",
+            "Resource": "${ScrapingLambdaFunction}",
+            "OutputPath": "$.Payload",
+            "Parameters": {
+                "Payload.$": "$",
+                "FunctionName": "${SearchLambdaFunction}"
+            },
+            "Retry": [
+                {
+                    "ErrorEquals": [
+                        "Lambda.ServiceException",
+                        "Lambda.AWSLambdaException",
+                        "Lambda.SdkClientException"
+                    ],
+                    "IntervalSeconds": 2,
+                    "MaxAttempts": 6,
+                    "BackoffRate": 2
+                }
+            ],
+            "End": true
+        }
+    }
+}

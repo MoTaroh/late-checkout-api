@@ -11,22 +11,54 @@ Globals:
     Timeout: 120
 
 Resources:
+  DynamoDBSearchFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: functions/search/
+      Handler: app.lambda_handler
+      Runtime: python3.8
+      Policies:
+        - AmazonDynamoDBFullAccess
+      Layers:
+        - !Ref LambdaLayer
+      Architectures:
+        - x86_64
   ScrapingFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      CodeUri: scraping/
+      CodeUri: functions/scraping/
       Handler: app.lambda_handler
       Runtime: python3.8
       Layers:
         - !Ref LambdaLayer
       Architectures:
         - x86_64
-      Events:
-        Scraping:
-          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
-          Properties:
-            Path: /plans
-            Method: get
+  StateMachine:
+    Type: AWS::Serverless::StateMachine
+    Properties:
+      Name: sfn-late-checkout
+      DefinitionUri: statemachine/sfn.asl.json
+      DefinitionSubstitutions:
+        SearchLambdaFunction: !GetAtt DynamoDBSearchFunction.Arn
+        ScrapingLambdaFunction: !GetAtt ScrapingFunction.Arn
+      Role: !GetAtt StateMachineRole.Arn
+  StateMachineRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - states.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Path: /
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaRole
+        - arn:aws:iam::aws:policy/CloudWatchLogsFullAccess
+
   LambdaLayer:
     Type: AWS::Serverless::LayerVersion
     Properties:
