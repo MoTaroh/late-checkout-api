@@ -13,35 +13,36 @@ class Parser:
         Returns:
             list: レイトチェックアウト可能なプラン一覧
         """
-        soup = BeautifulSoup(html, 'html.parser')
+        soup = BeautifulSoup(html, "html.parser")
         # プラン情報取得
         plan_name_list = soup.select(".p-searchResultItem__catchPhrase")
         checkin_out_list = soup.select(".p-checkInOut__value")
         plan_details_list = soup.select(".p-searchResultItem__planTable")
         # 空白や改行などを削除
-        checkin_out_list = [re.sub(r"\s", "", t.string).replace('～', '').replace("〜", "")
-                            for t in checkin_out_list]
-        print("check in_out time: ", checkin_out_list)
+        checkin_out_list = [re.sub(r"\s", "", t.string).replace("～", "").replace("〜", "") for t in checkin_out_list]
         # チェックアウト時間が指定時間より遅いものを抽出
         plans = []
         index = 0
         for p_name, p_details in zip(plan_name_list, plan_details_list):
-            print(p_name.string)
 
-            if self.is_late(checkin_out_list[index+1]):
-                print("Got late checkout plan.")
-                rooms = [(room.string, room.get("href")) for room in p_details.select(
-                    "a.p-searchResultItem__planName")]
-                total_prices = [re.sub(r"\s", "", price.string) for price in p_details.select(
-                    ".p-searchResultItem__total")]
-                room_list = [{"roomName": room[0], "roomURL":room[1], "roomPrice":price}
-                             for room, price in zip(rooms, total_prices)]
+            if self.is_late(checkin_out_list[index + 1]):
+                print("Get late checkout plan: ", re.sub(r"\s", "", p_name.string))
+                rooms = [
+                    (room.string, room.get("href")) for room in p_details.select("a.p-searchResultItem__planName")
+                ]
+                total_prices = [
+                    re.sub(r"\s", "", price.string) for price in p_details.select(".p-searchResultItem__total")
+                ]
+                room_list = [
+                    {"roomName": room[0], "roomURL": room[1], "roomPrice": price}
+                    for room, price in zip(rooms, total_prices)
+                ]
 
                 plan = {
                     "planName": re.sub(r"\s", "", p_name.string),
                     "checkInTime": checkin_out_list[index],
-                    "checkOutTime": checkin_out_list[index+1],
-                    "roomList": room_list
+                    "checkOutTime": checkin_out_list[index + 1],
+                    "roomList": room_list,
                 }
 
                 plans.append(plan)
@@ -63,13 +64,12 @@ class Parser:
         wish_time = datetime.strptime(wish_time, "%H:%M")
         try:
             checkout_time = datetime.strptime(checkout_time, "%H:%M")
-        except:
+        except ValueError as e:
+            print(e)
             print("Could not parse time", checkout_time)
             return False
 
         if checkout_time >= wish_time:
-            print("True: ", checkout_time)
             return True
         else:
-            print("False: ", checkout_time)
             return False
