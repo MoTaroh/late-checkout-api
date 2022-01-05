@@ -1,6 +1,3 @@
-import requests
-
-
 class Hotel():
     def __init__(self, hotelName: str, yadNo: int, regionName: str, stayYear: int, stayMonth: int, stayDay: int, stayCount: int, adultNum: int) -> None:
         self.hotelName = hotelName
@@ -14,10 +11,5 @@ class Hotel():
         self.url = self.create_url()
 
     def create_url(self) -> str:
-        url = f"https://www.jalan.net/yad{yadNo}/plan/?screenId=UWW3101&yadNo={yadNo}&reSearchFlg=1&roomCrack=200000&smlCd=272005&distCd=01&stayYear={stayYear}&stayMonth={stayMonth}&stayDay={stayDay}&stayCount={stayCount}&roomCount=1&adultNum={adultNum}"
+        url = f"https://www.jalan.net/yad{self.yadNo}/plan/?screenId=UWW3101&yadNo={self.yadNo}&reSearchFlg=1&roomCrack=200000&smlCd=272005&distCd=01&stayYear={self.stayYear}&stayMonth={self.stayMonth}&stayDay={self.stayDay}&stayCount={self.stayCount}&roomCount=1&adultNum={self.adultNum}"
         return url
-
-    def get_html(self) -> str:
-        response = requests.get(self.url)
-        html = response.text
-        return html
