@@ -10,7 +10,6 @@
         "ReturnHotelData": {
             "Type": "Task",
             "Resource": "${ScrapingLambdaFunction}",
-            "OutputPath": "$.Payload",
             "Parameters": {
                 "Payload.$": "$",
                 "FunctionName": "${SearchLambdaFunction}"
