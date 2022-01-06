@@ -8,7 +8,6 @@ Description: >
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
   Function:
-    Timeout: 120
     Runtime: python3.8
     Architectures:
       - x86_64
@@ -19,6 +18,7 @@ Resources:
     Properties:
       CodeUri: functions/search/
       Handler: app.lambda_handler
+      Timeout: 120
       Policies:
         - AmazonDynamoDBFullAccess
       Layers:
@@ -28,6 +28,8 @@ Resources:
     Properties:
       CodeUri: functions/scraping/
       Handler: app.lambda_handler
+      Timeout: 300
+      MemorySize: 256
       Layers:
         - !Ref LambdaLayer
   StateMachine:
@@ -50,6 +52,7 @@ Resources:
           Properties:
             Path: /search/status
             Method: post
+            # Action: DescribeExecution <- Unimplemented
   StateMachineRole:
     Type: AWS::IAM::Role
     Properties:
