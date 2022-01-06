@@ -30,6 +30,8 @@ Resources:
       Handler: app.lambda_handler
       Timeout: 300
       MemorySize: 256
+      Policies:
+        - AmazonDynamoDBFullAccess
       Layers:
         - !Ref LambdaLayer
   StateMachine:
