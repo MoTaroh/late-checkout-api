@@ -107,11 +107,11 @@ async def handle_request(hotels: dict, parser, search_param: dict):
                 h["hotelName"],
                 h["hotelNo"],
                 h["regionName"],
-                search_param["stay_year"],
-                search_param["stay_month"],
-                search_param["stay_day"],
-                search_param["stay_count"],
-                search_param["adult_num"],
+                search_param["stayYear"],
+                search_param["stayMonth"],
+                search_param["stayDay"],
+                search_param["stayCount"],
+                search_param["adultNum"],
             )
             url = hotel.url
             print(url)
