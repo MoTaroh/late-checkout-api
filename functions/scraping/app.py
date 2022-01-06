@@ -30,33 +30,35 @@ def lambda_handler(event, context):
     """
 
     # TODO:eventのバリデーション -> とりあえず後回し
+    print(event)
+    found = event["Payload"]["found"]
+    data = json.loads(event["Payload"]["data"])
 
-    query = event["queryStringParameters"]
-    search_param = {
-        "stay_year": query["stayYear"],
-        "stay_month": query["stayMonth"],
-        "stay_day": query["stayDay"],
-        "stay_count": query["stayCount"],
-        "adult_num": query["adultNum"]
-    }
+    if found:
+        items = json.loads(data["hotels"])
+        return {"statusCode": 200, "body": json.dumps({"totalCount": len(items), "items": items})}
+    else:
+        # scraping
+        search_param = data
 
-    # レイトチェックアウトホテル一覧を取得
-    hotels = HOTELS
-    parser = Parser()
-    loop = asyncio.get_event_loop()
-    result = loop.run_until_complete(
-        handle_request(hotels, parser, search_param))
+        # レイトチェックアウトホテル一覧を取得
+        hotels = HOTELS
+        parser = Parser()
+        loop = asyncio.get_event_loop()
+        result = loop.run_until_complete(handle_request(hotels, parser, search_param))
 
-    print("== result ==")
-    print(result)
+        print("== result ==")
+        print(result)
 
-    return {
-        "statusCode": 200,
-        "body": json.dumps({
-            "total_count": len(result),
-            "items": result,
-        }),
-    }
+        return {
+            "statusCode": 200,
+            "body": json.dumps(
+                {
+                    "total_count": len(result),
+                    "items": result,
+                }
+            ),
+        }
 
 
 async def get_hotel(session, url, parser, hotel):
@@ -70,7 +72,7 @@ async def get_hotel(session, url, parser, hotel):
         # "prefNo": hotel.prefNo,
         # "regionNo": hotel.regionNo,
         "regionName": hotel.regionName,
-        "planList": plans
+        "planList": plans,
     }
     return hotel_result
 
@@ -81,8 +83,15 @@ async def handle_request(hotels: dict, parser, search_param: dict):
     async with aiohttp.ClientSession() as session:
         for h in hotels:
             hotel = Hotel(
-                h["hotelName"], h["hotelNo"], h["regionName"],
-                search_param["stay_year"], search_param["stay_month"], search_param["stay_day"], search_param["stay_count"], search_param["adult_num"])
+                h["hotelName"],
+                h["hotelNo"],
+                h["regionName"],
+                search_param["stay_year"],
+                search_param["stay_month"],
+                search_param["stay_day"],
+                search_param["stay_count"],
+                search_param["adult_num"],
+            )
             url = hotel.url
             print(url)
             task = asyncio.create_task(get_hotel(session, url, parser, hotel))

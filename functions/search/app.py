@@ -20,12 +20,12 @@ def lambda_handler(event, context):
     """
     # bodyから検索条件を取得
     try:
-        data = json.loads(event["input"])
-        stay_year = data["stayYear"]
-        stay_month = data["stayMonth"]
-        stay_day = data["stayDay"]
-        stay_count = data["stayCount"]
-        adult_num = data["adultNum"]
+        body = json.loads(event["input"])
+        stay_year = body["stayYear"]
+        stay_month = body["stayMonth"]
+        stay_day = body["stayDay"]
+        stay_count = body["stayCount"]
+        adult_num = body["adultNum"]
     except json.JSONDecodeError as e:
         print(e)
         raise e
@@ -37,7 +37,7 @@ def lambda_handler(event, context):
     db_key = f"{stay_year}-{stay_month}-{stay_day}-{stay_count}-{adult_num}"
 
     # DynamoDBに対して検索
-    dynamodb = boto3.resource("dynamodb", endpoint_url="http://localhost:8000")
+    dynamodb = boto3.resource("dynamodb")
     table = dynamodb.Table("LateCheckoutHotels")
 
     try:
@@ -45,10 +45,15 @@ def lambda_handler(event, context):
     except ClientError as e:
         print(e.response["Error"]["Message"])
     else:
-        data = response.get("Item", {})
+        data = response.get("Item")
 
     # 見つかればTrue, 見つからなければFalseを返す
-    found = True if data else False
+    if data:
+        found = True
+    else:
+        found = False
+        # スクレイピング用に検索条件を渡す
+        data = body
 
     return {
         "found": found,
