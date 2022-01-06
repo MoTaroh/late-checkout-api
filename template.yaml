@@ -9,6 +9,9 @@ Description: >
 Globals:
   Function:
     Timeout: 120
+    Runtime: python3.8
+    Architectures:
+      - x86_64
 
 Resources:
   DynamoDBSearchFunction:
@@ -16,23 +19,17 @@ Resources:
     Properties:
       CodeUri: functions/search/
       Handler: app.lambda_handler
-      Runtime: python3.8
       Policies:
         - AmazonDynamoDBFullAccess
       Layers:
         - !Ref LambdaLayer
-      Architectures:
-        - x86_64
   ScrapingFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
       CodeUri: functions/scraping/
       Handler: app.lambda_handler
-      Runtime: python3.8
       Layers:
         - !Ref LambdaLayer
-      Architectures:
-        - x86_64
   StateMachine:
     Type: AWS::Serverless::StateMachine
     Properties:
@@ -42,6 +39,17 @@ Resources:
         SearchLambdaFunction: !GetAtt DynamoDBSearchFunction.Arn
         ScrapingLambdaFunction: !GetAtt ScrapingFunction.Arn
       Role: !GetAtt StateMachineRole.Arn
+      Events:
+        ExecuteApi:
+          Type: Api
+          Properties:
+            Path: /search
+            Method: post
+        StatusApi:
+          Type: Api
+          Properties:
+            Path: /search/status
+            Method: post
   StateMachineRole:
     Type: AWS::IAM::Role
     Properties:
@@ -58,7 +66,13 @@ Resources:
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AWSLambdaRole
         - arn:aws:iam::aws:policy/CloudWatchLogsFullAccess
-
+  DynamoDB:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      TableName: LateCheckoutHotels
+      PrimaryKey:
+        Name: id
+        Type: String
   LambdaLayer:
     Type: AWS::Serverless::LayerVersion
     Properties:
