@@ -65,19 +65,21 @@ def lambda_handler(event, context):
 async def get_hotel(session, url: str, parser: Parser, hotel: Hotel, sem: asyncio.Semaphore):
     async with sem:
         r = await session.get(url)
-        html = await r.text()
+        html = await r.content.read()
         print(hotel.hotelName)
 
         plans = parser.parse(html)
-        hotel_result = {
-            "hotelNo": hotel.yadNo,
-            "hotelName": hotel.hotelName,
-            # "prefNo": hotel.prefNo,
-            # "regionNo": hotel.regionNo,
-            "regionName": hotel.regionName,
-            "planList": plans,
-        }
-        return hotel_result
+        if plans:
+            hotel_result = {
+                "hotelNo": hotel.yadNo,
+                "hotelName": hotel.hotelName,
+                # "prefNo": hotel.prefNo,
+                # "regionNo": hotel.regionNo,
+                "regionName": hotel.regionName,
+                "planList": plans,
+            }
+
+            return hotel_result
 
 
 async def handle_request(hotels: dict, parser, search_param: dict, limit: int):

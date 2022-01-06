@@ -45,6 +45,7 @@ def lambda_handler(event, context):
     except ClientError as e:
         print(e.response["Error"]["Message"])
     else:
+        print("Successfully get item.", response)
         data = response.get("Item")
 
     # 見つかればTrue, 見つからなければFalseを返す
