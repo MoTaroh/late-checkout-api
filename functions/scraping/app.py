@@ -1,6 +1,9 @@
 import json
+import boto3
 import aiohttp
 import asyncio
+
+from botocore.exceptions import ClientError
 
 from hotels import HOTELS
 from hotel import Hotel
@@ -40,6 +43,11 @@ def lambda_handler(event, context):
     else:
         # scraping
         search_param = data
+        stay_year = search_param["stayYear"]
+        stay_month = search_param["stayMonth"]
+        stay_day = search_param["stayDay"]
+        stay_count = search_param["stayCount"]
+        adult_num = search_param["adultNum"]
 
         # レイトチェックアウトホテル一覧を取得
         hotels = HOTELS
@@ -49,6 +57,19 @@ def lambda_handler(event, context):
 
         print("== result ==")
         print(result)
+
+        dynamodb = boto3.resource("dynamodb")
+        table = dynamodb.Table("LateCheckoutHotels")
+
+        db_id = f"{stay_year}-{stay_month}-{stay_day}-{stay_count}-{adult_num}"
+        print(f"Put result to DynamoDB. Key: {db_id}")
+
+        try:
+            response = table.put_item(Item={"id": db_id, "hotels": json.dumps(result)})
+        except ClientError as e:
+            print(e.response["Error"]["Message"])
+        else:
+            print(response)
 
         return {
             "statusCode": 200,
