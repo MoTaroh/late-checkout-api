@@ -1,3 +1,4 @@
+import os
 import json
 import boto3
 import aiohttp
@@ -8,6 +9,10 @@ from botocore.exceptions import ClientError
 from hotels import HOTELS
 from hotel import Hotel
 from parser import Parser
+
+
+dynamodb = boto3.resource("dynamodb")
+table = dynamodb.Table("LateCheckoutHotels")
 
 
 def lambda_handler(event, context):
@@ -31,15 +36,12 @@ def lambda_handler(event, context):
         # レイトチェックアウトホテル一覧を取得
         hotels = HOTELS
         parser = Parser()
-        parallel_limit = 10
+        parallel_limit = os.environ.get("PARALLEL_LIMIT", 10)
         loop = asyncio.get_event_loop()
         result = loop.run_until_complete(handle_request(hotels, parser, search_param, parallel_limit))
 
         print("== result ==")
         print(result)
-
-        dynamodb = boto3.resource("dynamodb")
-        table = dynamodb.Table("LateCheckoutHotels")
 
         db_id = f"{stay_year}-{stay_month}-{stay_day}-{stay_count}-{adult_num}"
         print(f"Put result to DynamoDB. Key: {db_id}")
