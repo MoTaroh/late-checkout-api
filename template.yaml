@@ -30,6 +30,9 @@ Resources:
       Handler: app.lambda_handler
       Timeout: 300
       MemorySize: 256
+      Environment:
+        Variables:
+          PARALLEL_LIMIT: 10
       Policies:
         - AmazonDynamoDBFullAccess
       Layers:
