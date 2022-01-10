@@ -36,11 +36,12 @@ def lambda_handler(event, context):
         # レイトチェックアウトホテル一覧を取得
         hotels = HOTELS
         parser = Parser()
-        parallel_limit = os.environ.get("PARALLEL_LIMIT", 10)
+        parallel_limit = int(os.environ.get("PARALLEL_LIMIT", 10))
         loop = asyncio.get_event_loop()
         result = loop.run_until_complete(handle_request(hotels, parser, search_param, parallel_limit))
 
         print("== result ==")
+        result = list(filter(None, result))
         print(result)
 
         db_id = f"{stay_year}-{stay_month}-{stay_day}-{stay_count}-{adult_num}"

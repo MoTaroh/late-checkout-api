@@ -21,6 +21,8 @@ def lambda_handler(event, context):
     # bodyから検索条件を取得
     try:
         body = json.loads(event["input"])
+        print(body)
+
         stay_year = body["stayYear"]
         stay_month = body["stayMonth"]
         stay_day = body["stayDay"]
