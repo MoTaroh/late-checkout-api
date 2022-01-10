@@ -24,7 +24,7 @@ class TestParser:
                                     <div class="p-planCassette__row">
                                         <div class="p-planCassette__picture">
                                             <a
-                                                href="/uw/uwp3200/uww3201init.do?stayYear=2022&amp;stayMonth=1&amp;stayDay=8&amp;stayCount=1&amp;roomCount=1&amp;adultNum=2&amp;distCd=01&amp;yadNo=328778&amp;smlCd=272002&amp;roomCrack=200000&screenId=UWW3101&planCd=03332952&roomTypeCd=0454180&planListNumPlan=23__0&groupBookingFlg="><img
+                                                href="/uw/uwp3200/uww3201init.do?stayYear=2022&stayMonth=1&stayDay=8&stayCount=1&roomCount=1&adultNum=2&distCd=01&yadNo=328778&smlCd=272002&roomCrack=200000&screenId=UWW3101&planCd=03332952&roomTypeCd=0454180&planListNumPlan=23__0&groupBookingFlg="><img
                                                     src="https://cdn.jalan.jp/jalan/images/pictM/Y8/Y328778/Y328778519.jpg"
                                                     width="134" height="101" class="pht-lin01"></a>
                                         </div>
@@ -107,7 +107,7 @@ class TestParser:
                                                 <td class="p-searchResultItem__planNameCell">
                                                     <div class="p-searchResultItem__planNameAndHorizontalLabels">
                                                         <a class="p-searchResultItem__planName"
-                                                            href="/uw/uwp3200/uww3201init.do?stayYear=2022&amp;stayMonth=1&amp;stayDay=8&amp;stayCount=1&amp;roomCount=1&amp;adultNum=2&amp;distCd=01&amp;yadNo=328778&amp;smlCd=272002&amp;roomCrack=200000&screenId=UWW3101&planCd=03332952&roomTypeCd=0365180&planListNumPlan=23_0_1&groupBookingFlg=">禁煙クイーン［17平米/ベッド幅160cm］</a>
+                                                            href="/uw/uwp3200/uww3201init.do?stayYear=2022&stayMonth=1&stayDay=8&stayCount=1&roomCount=1&adultNum=2&distCd=01&yadNo=328778&smlCd=272002&roomCrack=200000&screenId=UWW3101&planCd=03332952&roomTypeCd=0365180&planListNumPlan=23_0_1&groupBookingFlg=">禁煙クイーン［17平米/ベッド幅160cm］</a>
                                                     </div>
                                                     <div class="p-searchResultItem__planName">
                                                         <ul class="p-searchResultItem__verticalLabels">
@@ -132,7 +132,7 @@ class TestParser:
                                                 <td rowspan="2" class="p-searchResultItem__planNameCell">
                                                     <div class="p-searchResultItem__planNameAndHorizontalLabels">
                                                         <a class="p-searchResultItem__planName"
-                                                            href="/uw/uwp3200/uww3201init.do?stayYear=2022&amp;stayMonth=1&amp;stayDay=8&amp;stayCount=1&amp;roomCount=1&amp;adultNum=2&amp;distCd=01&amp;yadNo=328778&amp;smlCd=272002&amp;roomCrack=200000&screenId=UWW3101&planCd=03332952&roomTypeCd=0407962&planListNumPlan=23_0_2&groupBookingFlg=">禁煙ツイン［17平米/ベッド幅90cm］</a>
+                                                            href="/uw/uwp3200/uww3201init.do?stayYear=2022&stayMonth=1&stayDay=8&stayCount=1&roomCount=1&adultNum=2&distCd=01&yadNo=328778&smlCd=272002&roomCrack=200000&screenId=UWW3101&planCd=03332952&roomTypeCd=0407962&planListNumPlan=23_0_2&groupBookingFlg=">禁煙ツイン［17平米/ベッド幅90cm］</a>
                                                     </div>
                                                     <div class="p-searchResultItem__planName">
                                                         <ul class="p-searchResultItem__verticalLabels">
@@ -170,12 +170,12 @@ class TestParser:
                 "roomList": [
                     {
                         "roomName": "禁煙クイーン［17平米/ベッド幅160cm］",
-                        "roomURL": "/uw/uwp3200/uww3201init.do?stayYear=2022&amp;stayMonth=1&amp;stayDay=8&amp;stayCount=1&amp;roomCount=1&amp;adultNum=2&amp;distCd=01&amp;yadNo=328778&amp;smlCd=272002&amp;roomCrack=200000&screenId=UWW3101&planCd=03332952&roomTypeCd=0365180&planListNumPlan=23_0_1&groupBookingFlg=",
+                        "roomURL": "https://www.jalan.net/uw/uwp3200/uww3201init.do?stayYear=2022&stayMonth=1&stayDay=8&stayCount=1&roomCount=1&adultNum=2&distCd=01&yadNo=328778&smlCd=272002&roomCrack=200000&screenId=UWW3101&planCd=03332952&roomTypeCd=0365180&planListNumPlan=23_0_1&groupBookingFlg=",
                         "roomPrice": "11,560円",
                     },
                     {
                         "roomName": "禁煙ツイン［17平米/ベッド幅90cm］",
-                        "roomURL": "/uw/uwp3200/uww3201init.do?stayYear=2022&amp;stayMonth=1&amp;stayDay=8&amp;stayCount=1&amp;roomCount=1&amp;adultNum=2&amp;distCd=01&amp;yadNo=328778&amp;smlCd=272002&amp;roomCrack=200000&screenId=UWW3101&planCd=03332952&roomTypeCd=0407962&planListNumPlan=23_0_2&groupBookingFlg=",
+                        "roomURL": "https://www.jalan.net/uw/uwp3200/uww3201init.do?stayYear=2022&stayMonth=1&stayDay=8&stayCount=1&roomCount=1&adultNum=2&distCd=01&yadNo=328778&smlCd=272002&roomCrack=200000&screenId=UWW3101&planCd=03332952&roomTypeCd=0407962&planListNumPlan=23_0_2&groupBookingFlg=",
                         "roomPrice": "11,560円",
                     },
                 ],

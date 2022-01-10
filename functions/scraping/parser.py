@@ -2,6 +2,8 @@ import re
 from datetime import datetime
 from bs4 import BeautifulSoup
 
+JALAN_URL = "https://www.jalan.net"
+
 
 class Parser:
     def parse(self, html: str):
@@ -28,13 +30,13 @@ class Parser:
             if self.is_late(checkin_out_list[index + 1]):
                 print("Get late checkout plan: ", re.sub(r"\s", "", p_name.string))
                 rooms = [
-                    (room.string, room.get("href")) for room in p_details.select("a.p-searchResultItem__planName")
+                    [room.string, room.get("href")] for room in p_details.select("a.p-searchResultItem__planName")
                 ]
                 total_prices = [
                     re.sub(r"\s", "", price.string) for price in p_details.select(".p-searchResultItem__total")
                 ]
                 room_list = [
-                    {"roomName": room[0], "roomURL": room[1], "roomPrice": price}
+                    {"roomName": room[0], "roomURL": f"{JALAN_URL}{room[1].replace('amp;', '')}", "roomPrice": price}
                     for room, price in zip(rooms, total_prices)
                 ]
 
