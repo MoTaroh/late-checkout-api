@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 import boto3
 from botocore.exceptions import ClientError
 
@@ -51,7 +52,8 @@ def lambda_handler(event, context):
         data = response.get("Item")
 
     # 見つかればTrue, 見つからなければFalseを返す
-    if data:
+    if data and not is_outdated(data["updatedAt"]):
+        # まだデータが新しいので、スクレイピング不要
         found = True
     else:
         found = False
@@ -62,3 +64,13 @@ def lambda_handler(event, context):
         "found": found,
         "data": json.dumps(data),
     }
+
+
+def is_outdated(timestamp: str):
+    now = datetime.now()
+    updated_at = datetime.fromisoformat(timestamp)
+    delta = now - updated_at
+    if delta.total_seconds() / 3600 > 24:
+        print(f"{timestamp} is outdated.")
+        return True
+    return False

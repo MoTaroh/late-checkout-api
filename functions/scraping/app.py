@@ -3,6 +3,7 @@ import json
 import boto3
 import aiohttp
 import asyncio
+from datetime import datetime
 
 from botocore.exceptions import ClientError
 
@@ -46,9 +47,10 @@ def lambda_handler(event, context):
 
         db_id = f"{stay_year}-{stay_month}-{stay_day}-{stay_count}-{adult_num}"
         print(f"Put result to DynamoDB. Key: {db_id}")
+        timestamp = datetime.now().isoformat(timespec="seconds")
 
         try:
-            response = table.put_item(Item={"id": db_id, "hotels": json.dumps(result)})
+            response = table.put_item(Item={"id": db_id, "hotels": json.dumps(result), "updatedAt": timestamp})
         except ClientError as e:
             print(e.response["Error"]["Message"])
         else:
